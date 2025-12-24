@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /backend
 
@@ -8,4 +8,4 @@ RUN npm ci
 
 EXPOSE 8000
 
-CMD [ "node" "src/server.js" ]
+CMD [ "node", "src/server.js" ]

@@ -1,13 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import { Pool } from 'pg';
-import dotenv from 'dotenv'
 
 const app = express();
 app.use(cors());
-app.use(dotenv.config({
-  path: ".env"
-}));
 app.use(express.json());
 
 const pool = new Pool({
@@ -17,6 +13,8 @@ const pool = new Pool({
   database: process.env.DB_NAME || "issues",
   port: 5432,
 });
+
+
 
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
@@ -57,7 +55,9 @@ app.patch("/issues/:id", async (req, res) => {
   res.json(result.rows[0]);
 });
 
-const PORT = 4000;
+const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
+  console.log(`${process.env.DB_USER}`);
+  console.log(`${process.env.DB_PASSWORD}`);
 });

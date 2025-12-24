@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL
 
 interface issuesInterface {
   id: string
@@ -13,6 +13,8 @@ export default function App() {
   const [title, setTitle] = useState("");
 
   const loadIssues = async () => {
+    console.log(API_URL)
+    console.log(import.meta.env.VITE_API_URL)
     const res = await fetch(`${API_URL}/issues`);
     const data = await res.json();
     setIssues(data);
