@@ -1,4 +1,5 @@
 pipeline{
+    agent any
     tools{
         nodejs "node22"
     }
@@ -56,7 +57,7 @@ pipeline{
                 }
             }
         }
-        
+
         stage("Build and Push Frontend Docker Image"){
             steps{
                 dir("frontend"){
