@@ -1,12 +1,12 @@
 services:
   frontend:
-    image: 511913187986.dkr.ecr.ap-south-1.amazonaws.com/isssue-tracker-app-frontend:1.0  
+    image: 511913187986.dkr.ecr.ap-south-1.amazonaws.com/issue-tracker-app-frontend:1.0  
     container_name: frontend
     ports:
       - "3000:80"
 
   backend:
-    image: 511913187986.dkr.ecr.ap-south-1.amazonaws.com/isssue-tracker-app-backend:1.0  
+    image: 511913187986.dkr.ecr.ap-south-1.amazonaws.com/issue-tracker-app-backend:1.0  
     container_name: backend
     environment:
       - DB_USER=postgres
