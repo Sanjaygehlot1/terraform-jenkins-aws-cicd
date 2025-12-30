@@ -5,6 +5,7 @@ pipeline{
     }
     environment{
         IMAGE_TAG = "${GIT_COMMIT}"
+        APP_BRANCH = "${GIT_BRANCH.replace('origin/', '')}"
         IMAGE_OLD_TAG = "${GIT_PREVIOUS_COMMIT ?: ''}" 
         AWS_REGION = "ap-south-1"
         ECR_REGISTRY = "511913187986.dkr.ecr.${AWS_REGION}.amazonaws.com"
@@ -77,7 +78,7 @@ pipeline{
                     sh """
 ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_IP} << EOF
 cd /opt/issue-tracker
-git pull origin master
+git pull origin ${APP_BRANCH}
 export IMAGE_TAG=${IMAGE_TAG}
 docker compose down
 docker compose pull
