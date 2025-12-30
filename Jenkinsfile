@@ -62,7 +62,9 @@ pipeline{
             steps{
                 dir("frontend"){
                     sh """
-                        docker build -t ${ECR_REGISTRY}/${FRONTEND_REPO_NAME}:${IMAGE_TAG} .
+                        docker build \
+                        --build-arg VITE_API_URL=http://${APP_EC2_IP}:8000 \
+                        -t ${ECR_REGISTRY}/${FRONTEND_REPO_NAME}:${IMAGE_TAG} .
                         docker push ${ECR_REGISTRY}/${FRONTEND_REPO_NAME}:${IMAGE_TAG}
                     """
                 }
