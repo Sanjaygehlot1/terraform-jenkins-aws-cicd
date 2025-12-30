@@ -9,7 +9,7 @@ pipeline{
         ECR_REGISTRY = "511913187986.dkr.ecr.${AWS_REGION}.amazonaws.com"
         FRONTEND_REPO_NAME =  "issue-tracker-app-frontend"
         BACKEND_REPO_NAME =  "issue-tracker-app-backend"
-        APP_EC2_IP = ""
+        APP_EC2_IP = "ec2-13-203-157-159.${AWS_REGION}.compute.amazonaws.com"
     }
     stages{
         stage("Test & Build"){
@@ -73,12 +73,12 @@ pipeline{
             steps{
                 sshagent(credentials:['app-ec2-key']){
                     sh """
-                    ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_IP} << EOF
-                    cd /opt/issue-tracker
-                    docker compose pull
-                    docker compose up -d
-                    EOF
-                    """
+ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_IP} << EOF
+cd /opt/issue-tracker
+docker compose pull
+docker compose up -d
+EOF
+"""
                 }
             }
         }
