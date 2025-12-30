@@ -82,7 +82,7 @@ resource "aws_iam_instance_profile" "jenkins_profile" {
 
 resource "aws_instance" "jenkins_instance" {
   ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t2.micro"
+  instance_type               = "t3.medium"
   vpc_security_group_ids      = [aws_security_group.jenkins_sg.id]
   key_name                    = "demo-key"
   user_data                   = file("${path.module}/user_data.sh")
@@ -91,6 +91,5 @@ resource "aws_instance" "jenkins_instance" {
   tags = {
     Name = "jenkins_ec2"
   }
-
 }
 

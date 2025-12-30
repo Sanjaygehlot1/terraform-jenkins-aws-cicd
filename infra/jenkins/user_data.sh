@@ -2,6 +2,7 @@
 set -euxo pipefail
 
 dnf update -y
+dnf install git -y
 
 dnf install -y java-17-amazon-corretto
 java -version
@@ -20,5 +21,6 @@ curl -fsSL https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key \
 rpm --import /etc/pki/rpm-gpg/jenkins.io-2023.key
 
 dnf install -y jenkins
+usermod -aG docker jenkins
 systemctl enable jenkins
 systemctl start jenkins
