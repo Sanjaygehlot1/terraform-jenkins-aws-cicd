@@ -9,7 +9,7 @@ pipeline{
         ECR_REGISTRY = "511913187986.dkr.ecr.${AWS_REGION}.amazonaws.com"
         FRONTEND_REPO_NAME =  "issue-tracker-app-frontend"
         BACKEND_REPO_NAME =  "issue-tracker-app-backend"
-        APP_EC2_IP = "ec2-13-201-80-223.${AWS_REGION}.compute.amazonaws.com"
+        APP_EC2_IP = "ec2-13-203-66-87.${AWS_REGION}.compute.amazonaws.com"
     }
     stages{
         stage("Test & Build"){
