@@ -77,6 +77,8 @@ pipeline{
                     sh """
 ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_IP} << EOF
 cd /opt/issue-tracker
+git pull origin master
+docker compose down
 docker compose pull
 docker compose up -d
 EOF
