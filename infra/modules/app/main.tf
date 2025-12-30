@@ -22,6 +22,13 @@ resource "aws_security_group" "issue_tracker_sg" {
     description = "Issue_Tracker"
     protocol    = "tcp"
   }
+  ingress{
+    from_port   = 8000
+    to_port     = 8000
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Issue_Tracker"
+    protocol    = "tcp"
+  }
   ingress {
     from_port   = 22
     to_port     = 22

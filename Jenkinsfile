@@ -4,7 +4,8 @@ pipeline{
         nodejs "node22"
     }
     environment{
-        IMAGE_TAG = 1.0 
+        IMAGE_TAG = "${GIT_COMMIT}"
+        IMAGE_OLD_TAG = "${GIT_PREVIOUS_COMMIT ?: ''}" 
         AWS_REGION = "ap-south-1"
         ECR_REGISTRY = "511913187986.dkr.ecr.${AWS_REGION}.amazonaws.com"
         FRONTEND_REPO_NAME =  "issue-tracker-app-frontend"
@@ -12,7 +13,7 @@ pipeline{
         APP_EC2_IP = "ec2-13-203-66-87.${AWS_REGION}.compute.amazonaws.com"
     }
     stages{
-        stage("Test & Build"){
+        stage("Test"){
             parallel{
                 stage("Backend"){
                     steps{
@@ -30,7 +31,6 @@ pipeline{
                             sh """
                                 npm ci
                                 npm run test
-                                npm run build
                             """
                         }
                     }
@@ -78,11 +78,34 @@ pipeline{
 ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_IP} << EOF
 cd /opt/issue-tracker
 git pull origin master
+export IMAGE_TAG=${IMAGE_TAG}
 docker compose down
 docker compose pull
 docker compose up -d
 EOF
 """
+                }
+            }
+        }
+    }
+
+    post{
+        failure {
+            script {
+                if (env.IMAGE_OLD_TAG?.trim()) {
+                    sshagent(credentials: ['app-ec2-key']) {
+                        sh """
+ssh -o StrictHostKeyChecking=no ec2-user@${APP_EC2_HOST} << EOF
+cd /opt/issue-tracker
+export IMAGE_TAG=${IMAGE_OLD_TAG}
+docker compose down
+docker compose pull
+docker compose up -d
+EOF
+"""
+                    }
+                } else {
+                    echo "No previous commit available — skipping rollback"
                 }
             }
         }
